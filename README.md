@@ -1,4 +1,4 @@
-# Tmux Sidecar (tmux-mcp)
+# Tmux Sidecar (tmux-sidecar)
 
 Tmux Sidecar is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that turns your terminal into an AI-native workspace. It allows AI agents to "sit" alongside you in your Tmux session, observing output and executing commands just like a pair programmer.
 
@@ -38,14 +38,14 @@ Sidecar acts as a **Sentinel**. using `smart_wait`, it can execute a command (li
 
 ## Installation & Usage
 
-The easiest way to use `tmux-mcp` is via `uv`. No cloning or manual installation is required.
+The easiest way to use `tmux-sidecar` is via `uv`. No cloning or manual installation is required.
 
 ### Quick Start (The Easiest Way)
 
 Run the server instantly:
 
 ```bash
-uv tool run tmux-mcp
+uv tool run tmux-sidecar
 ```
 
 ### Configuration for MCP Clients
@@ -55,9 +55,9 @@ Add this to your `claude_desktop_config.json` or equivalent:
 ```json
 {
   "mcpServers": {
-    "tmux-mcp": {
+    "tmux-sidecar": {
       "command": "uv",
-      "args": ["tool", "run", "tmux-mcp"]
+      "args": ["tool", "run", "tmux-sidecar"]
     }
   }
 }

@@ -1,5 +1,5 @@
 [project]
-name = "tmux-mcp"
+name = "tmux-sidecar"
 version = "0.1.0"
 description = "A native Tmux MCP server for AI agents"
 readme = "README.md"
@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [project.scripts]
-tmux-mcp = "tmux_mcp.server:main"
+tmux-sidecar = "tmux_mcp.server:main"
 
 [build-system]
 requires = ["hatchling"]
