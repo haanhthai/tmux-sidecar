@@ -1,11 +1,11 @@
 {
   "mcpServers": {
-    "tmux-sidecar": {
+    "tmux-mcp": {
       "command": "uv",
       "args": [
         "tool",
         "run",
-        "git+https://github.com/Logic-H/tmux-sidecar.git"
+        "tmux-mcp"
       ]
     }
   }

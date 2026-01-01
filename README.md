@@ -38,44 +38,37 @@ Sidecar acts as a **Sentinel**. using `smart_wait`, it can execute a command (li
 
 ## Installation & Usage
 
-You can use `tmux-mcp` directly without manually cloning the repository.
+The easiest way to use `tmux-mcp` is via `uv`. No cloning or manual installation is required.
 
-### Quick Start (using `uv`)
+### Quick Start (The Easiest Way)
 
 Run the server instantly:
 
 ```bash
-uv tool run git+https://github.com/Logic-H/tmux-sidecar.git
+uv tool run tmux-mcp
 ```
 
 ### Configuration for MCP Clients
 
-To use this with an MCP client (like Claude Desktop or Gemini), add the following to your configuration file:
+Add this to your `claude_desktop_config.json` or equivalent:
 
 ```json
 {
   "mcpServers": {
-    "tmux-sidecar": {
+    "tmux-mcp": {
       "command": "uv",
-      "args": [
-        "tool",
-        "run",
-        "--python",
-        "3.12",
-        "git+https://github.com/Logic-H/tmux-sidecar.git"
-      ]
+      "args": ["tool", "run", "tmux-mcp"]
     }
   }
 }
 ```
 
-### Manual Installation (pip)
+### Alternative: Install from GitHub
 
-If you prefer `pip`:
+If you prefer to run the absolute latest version from source:
 
 ```bash
-pip install git+https://github.com/Logic-H/tmux-sidecar.git
-tmux-mcp  # Run the server
+uv tool run git+https://github.com/Logic-H/tmux-sidecar.git
 ```
 
 
