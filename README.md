@@ -1,16 +1,33 @@
 # Tmux Sidecar (tmux-mcp)
 
-Tmux Sidecar is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that empowers AI agents to interact with, control, and observe [Tmux](https://github.com/tmux/tmux) sessions.
+Tmux Sidecar is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that turns your terminal into an AI-native workspace. It allows AI agents to "sit" alongside you in your Tmux session, observing output and executing commands just like a pair programmer.
 
-It acts as a bridge, allowing your AI assistant to perform terminal operations directly within your Tmux environment—splitting panes, running commands, reading output, and managing sessions—just like a human developer would.
+## The Sidecar Philosophy
 
-## Features
+Most AI coding tools require you to install heavy server components (Node.js, VS Code Server, etc.) on every machine you connect to. Tmux Sidecar takes a different approach: **Zero Infrastructure**.
 
-*   **Pane Management**: List active panes, split windows (horizontal/vertical), resize, and close panes.
-*   **Session Control**: Create, list, rename, and kill Tmux sessions and windows.
-*   **Robust Command Execution**: Run shell commands in specific panes with reliable output capturing (using marker injection to detect command completion).
-*   **Smart Observation**: Inspect pane content and "wait" for specific patterns in the terminal output.
-*   **Context Awareness**: "Lock" onto a specific pane to keep context across multiple operations.
+### 1. Agent Anywhere (No Remote Server)
+Because this tool operates by manipulating Tmux locally, **it works on any server you can SSH into.**
+*   Connecting to a legacy production server? **It works.**
+*   Jumping through a bastion host? **It works.**
+*   Working in a container? **It works.**
+
+The Agent lives on your local machine (the "Sidecar") but controls the remote environment through the SSH stream in your Tmux pane. You get full AI capabilities without installing a single file on the remote server.
+
+### 2. Context Locking (Laser Focus)
+Terminals are noisy. You might have logs scrolling in one pane, a monitor in another, and a shell in a third.
+Sidecar uses a **"Context Lock"** mechanism (`set_active_target`). Once locked, the Agent focuses exclusively on that specific pane (ID), ignoring the noise from other windows. It knows exactly where to type and exactly which output belongs to its command.
+
+### 3. The Sentinel (Smart Observation)
+Standard agents "fire and forget"—they run a command and hope for the best.
+Sidecar acts as a **Sentinel**. using `smart_wait`, it can execute a command (like `npm install` or `make build`) and then *watch* the stream. It waits for specific success signals ("Build Complete") or error patterns before waking up. It understands the *result*, not just the command.
+
+## Key Capabilities
+
+*   **Context Management**: Lock the agent to specific panes (`%1`, `%2`) for focused interaction.
+*   **Robust Execution**: Run commands with marker injection to guarantee output capture (even over SSH).
+*   **Layout Control**: Split panes, create windows, and organize your workspace dynamically.
+*   **Deep Inspection**: Read full pane history and snapshots to understand current state.
 
 ## Prerequisites
 
